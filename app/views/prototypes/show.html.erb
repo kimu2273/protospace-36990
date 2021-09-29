@@ -2,7 +2,7 @@
   <div class="inner">
     <div class="prototype__wrapper">
       <p class="prototype__hedding">
-        <%= "#{@prototype.user.name}" %>
+        <%= "#{@prototype.title}" %>
       </p>
       <%= link_to "by #{@prototype.user.name}", user_path(@prototype.user.id), class: :prototype__user %>
       <% if user_signed_in? && current_user.id == @prototype.user_id %>
@@ -13,7 +13,7 @@
       <% end %>
       <%# // プロトタイプの投稿者とログインしているユーザーが同じであれば上記を表示する %>
       <div class="prototype__image">
-        <%= image_tag "logo.png" %>
+        <%= image_tag @prototype.image %>
       </div>
       <div class="prototype__body">
         <div class="prototype__detail">
@@ -31,7 +31,7 @@
       </div>
       <div class="prototype__comments">
         <% if user_signed_in? %>
-          <%= form_with model:@prototype  ,local: true do |f|%>
+          <%= form_with model:[@prototype, @comment] ,local: true do |f|%>
             <div class="field">
               <%= f.label :content, "コメント" %><br />
               <%= f.text_field :content, id:"comment_content" %>
@@ -44,7 +44,7 @@
         <%# // ログインしているユーザーには上記を表示する %>
         <ul class="comments_lists">
           <%# 投稿に紐づくコメントを一覧する処理を記述する %>
-          <% @comments.each do |comment| %>
+           <% @comments.each do |comment| %>
             <li class="comments_list">
               <%= comment.content %>
               <%= link_to comment.user.name, user_path(@prototype.user.id), class: :comment_user %>
